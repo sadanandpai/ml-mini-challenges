@@ -1,3 +1,5 @@
+import { OneDAgent } from './one-d-agent/one-d';
+
 export function App() {
   return (
     <>
@@ -7,6 +9,8 @@ export function App() {
       <p className="text-center mb-4">
         Welcome to the official GitHub repository for ML Mini Challenges.
       </p>
+
+      <OneDAgent />
     </>
   );
 }
