@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import './one-d.css';
-import { AgentEnv } from './rl';
 import { Cell } from './components/cell';
 import { config } from './config';
 import { Controls } from './components/controls';
+import { AgentEnv } from './helpers/one-d-rl';
 
 export function OneDAgent() {
   const [agentEnv] = useState<AgentEnv>(() => {
@@ -86,8 +85,8 @@ export function OneDAgent() {
   };
 
   return (
-    <main>
-      <h1>One D Agent</h1>
+    <div className="flex flex-col items-center gap-6 mt-4">
+      <h1 className="text-3xl font-bold">1D Agent</h1>
 
       <Controls
         setSelectionMode={setSelectionMode}
@@ -113,6 +112,6 @@ export function OneDAgent() {
           />
         ))}
       </div>
-    </main>
+    </div>
   );
 }
