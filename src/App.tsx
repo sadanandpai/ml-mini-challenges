@@ -1,21 +1,19 @@
-import { OneDAgent } from './one-d-agent';
-import { TwoDAgent } from './two-d-agent';
+import { Router, Route, Switch } from 'wouter';
+import { useHashLocation } from 'wouter/use-hash-location';
+import { HomePage } from './pages/home';
+import { challenges } from './pages/home';
 
 export function App() {
   return (
-    <>
-      {/* <h1 className="text-4xl font-bold mt-4 mb-4 text-center">
-        ML Mini Challenges
-      </h1>
-      <p className="text-center mb-4">
-        Welcome to the official GitHub repository for ML Mini Challenges.
-      </p> */}
-
-      {/* <OneDAgent />
-
-      <hr className="my-10 border-gray-300" /> */}
-
-      <TwoDAgent />
-    </>
+    <Router hook={useHashLocation}>
+      <Switch>
+        <Route path="/" component={HomePage} />
+        {challenges.map(({ name, component: Component }) => (
+          <Route key={name} path={`/${name}`}>
+            <Component />
+          </Route>
+        ))}
+      </Switch>
+    </Router>
   );
 }
