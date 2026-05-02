@@ -28,12 +28,13 @@ export const checkBorder = ({
 
 export const generateRewards = (
   grid: CellType[][],
+  rewardPosition: [number, number],
   reward: number,
   penalty: number,
   stepPenalty: number,
   firePenalty: number,
 ) => {
-  return grid.map((row) =>
+  const rewards = grid.map((row) =>
     row.map((cell) => {
       if (cell === 'reward') return reward;
       if (cell === 'wall') return penalty;
@@ -41,4 +42,6 @@ export const generateRewards = (
       return stepPenalty;
     }),
   );
+  rewards[rewardPosition[0]][rewardPosition[1]] = reward;
+  return rewards;
 };

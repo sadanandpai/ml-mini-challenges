@@ -10,8 +10,8 @@ export const config = {
   ],
   rewardValue: 100,
   wallPenalty: -100,
-  firePenalty: -50,
+  firePenalty: -40,
   runDelay: 333,
-  episodes: 250,
+  episodes: 500,
   stepPenalty: -1,
 };

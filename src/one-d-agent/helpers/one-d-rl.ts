@@ -72,13 +72,18 @@ export class AgentEnv {
         // 1. Choose an action (epsilon-greedy)
         const action = this.getAction(currentState, explorationRate);
 
-        // 2. Get the reward, next state and max next state Q-value
-        let reward = this.rewards[currentState];
+        // 2. Get the next state and the reward
         let nextState = currentState + this.directions[action];
+        let reward: number;
 
         if (!this.checkBounds(nextState)) {
+          // Out of bounds: we hit a wall!
+          // Get the wall penalty from the intended nextState BEFORE resetting it
           reward = this.rewards[nextState];
-          nextState = currentState; // Bump into the wall, stay in same state
+          nextState = currentState; // bump back to current state
+        } else {
+          // Valid move: get the reward of the state we arrived in
+          reward = this.rewards[nextState];
         }
 
         const maxNextQValue = Math.max(...this.qTable[nextState]);
@@ -90,13 +95,6 @@ export class AgentEnv {
 
         // 4. Move to the next state
         currentState = nextState;
-
-        if (currentState == exitState) {
-          this.qTable[currentState] = Array.from(
-            { length: this.actions.length },
-            () => this.rewards[currentState],
-          );
-        }
       }
 
       // Decay the exploration rate

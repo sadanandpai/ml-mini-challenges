@@ -3,8 +3,12 @@ import { AgentEnv } from './helpers/two-d-rl';
 import { Cell } from './components/cell';
 import { config } from './config';
 import { Controls } from './components/controls';
-import type { CellType, SelectionMode } from './types';
-import { checkBorder, createInitialGrid, generateRewards } from './utils';
+import type { CellType, SelectionMode } from './helpers/types';
+import {
+  checkBorder,
+  createInitialGrid,
+  generateRewards,
+} from './helpers/utils';
 
 export function TwoDAgent() {
   const [agentEnv] = useState<AgentEnv>(() => {
@@ -18,6 +22,9 @@ export function TwoDAgent() {
 
   const [selectionMode, setSelectionMode] = useState<SelectionMode>(null);
   const [agentPosition, setAgentPosition] = useState<[number, number] | null>(
+    null,
+  );
+  const [rewardPosition, setRewardPosition] = useState<[number, number] | null>(
     null,
   );
 
@@ -34,11 +41,6 @@ export function TwoDAgent() {
       setIsTraining(false);
     };
   }, []);
-
-  const hasRewards = useMemo(
-    () => grid.some((row) => row.includes('reward')),
-    [grid],
-  );
 
   const handleCellClick = (r: number, c: number) => {
     if (
@@ -58,8 +60,9 @@ export function TwoDAgent() {
       if (grid[r][c] !== 'wall') {
         setAgentPosition([r, c]);
       }
+    } else if (selectionMode === 'reward') {
+      setRewardPosition([r, c]);
     } else if (
-      selectionMode === 'reward' ||
       selectionMode === 'wall' ||
       selectionMode === 'empty' ||
       selectionMode === 'fire'
@@ -90,12 +93,8 @@ export function TwoDAgent() {
     );
   };
 
-  const isTerminal = (r: number, c: number) => {
-    return grid[r][c] === 'reward';
-  };
-
   const trainAgent = async () => {
-    if (!hasRewards) {
+    if (!rewardPosition) {
       return;
     }
 
@@ -103,27 +102,28 @@ export function TwoDAgent() {
     agentEnv.train(
       generateRewards(
         grid,
+        rewardPosition,
         config.rewardValue,
         config.wallPenalty,
         config.stepPenalty,
         config.firePenalty,
       ),
       checkBounds,
-      isTerminal,
+      rewardPosition,
       config.episodes,
     );
     setIsTraining(false);
   };
 
   const runAgent = async () => {
-    if (!agentPosition || !hasRewards) {
+    if (!agentPosition || !rewardPosition) {
       return;
     }
 
     const actionGenerator = agentEnv.run(
       agentPosition,
       checkBounds,
-      isTerminal,
+      rewardPosition,
     );
 
     setIsAgentRunning(true);
@@ -151,6 +151,7 @@ export function TwoDAgent() {
 
   const resetEnvironment = () => {
     setAgentPosition(null);
+    setRewardPosition(null);
     setGrid(
       createInitialGrid({ rows: config.stateRows, cols: config.stateCols }),
     );
@@ -170,7 +171,7 @@ export function TwoDAgent() {
         isTraining={isTraining}
         resetEnvironment={resetEnvironment}
         agentPosition={agentPosition}
-        hasRewards={hasRewards}
+        hasRewards={!!rewardPosition}
       />
 
       <div
@@ -188,6 +189,7 @@ export function TwoDAgent() {
               cellType={cellType}
               isAgent={agentPosition?.[0] === r && agentPosition?.[1] === c}
               onClick={handleCellClick}
+              rewardPosition={rewardPosition}
             />
           )),
         )}

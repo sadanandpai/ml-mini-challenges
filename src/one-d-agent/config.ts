@@ -4,9 +4,10 @@ const directions = [-1, 1];
 const episodes = 25;
 const reward = 100;
 const wallPenalty = -100;
+const stepPenalty = -1;
 const runDelay = 333;
 
-const rewards = Array.from({ length: stateLength }, () => 0);
+const rewards = Array.from({ length: stateLength }, () => stepPenalty);
 const walls = [0, stateLength - 1];
 
 walls.forEach((wall) => (rewards[wall] = wallPenalty));

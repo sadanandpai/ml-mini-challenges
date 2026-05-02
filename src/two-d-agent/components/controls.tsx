@@ -1,4 +1,4 @@
-import type { SelectionMode } from '../types';
+import type { SelectionMode } from '../helpers/types';
 
 interface Props {
   setSelectionMode: (mode: SelectionMode) => void;
@@ -44,7 +44,7 @@ export function Controls({
       <button
         onClick={() => setSelectionMode('fire')}
         disabled={isAgentRunning || isTraining}
-        className="btn btn-outline text-orange-500 hover:bg-orange-500 hover:text-white hover:border-orange-500"
+        className="btn btn-outline"
       >
         Place Fire
       </button>
