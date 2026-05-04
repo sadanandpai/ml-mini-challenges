@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.14.0
+
+      - name: Setup git config
+        run: |
+          git config user.name "Sadanand Pai"
+          git config user.email "sadypai@gmail.com"
+
+      - name: NPM installation
+        run: npm ci
+
+      - name: Lint check
+        run: npm run lint
+
+      - name: Build setup
+        run: |
+          rm -rf dist
+          npm run build
+          git add docs -f
+
+      - name: Commit & push
+        run:
+          git diff --staged --quiet || (git commit -m "build files - github
+          action" && git push)

@@ -3,7 +3,7 @@ import { agentConfig } from '../config';
 export class AgentEnv {
   private rows: number;
   private cols: number;
-  private qTable: number[][][]; // [row][col][action]
+  private qTable!: number[][][]; // [row][col][action]
   private actions: number[];
   private directions: number[][]; // [dr, dc]
 

@@ -2,9 +2,9 @@ import { agentConfig } from '../config';
 
 export class AgentEnv {
   private statesCount: number;
-  private qTable: number[][];
+  private qTable!: number[][];
   private actions: number[];
-  private directions: number[];
+  private directions!: number[];
 
   constructor(statesCount: number, actions: number[]) {
     this.statesCount = statesCount;

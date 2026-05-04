@@ -64,7 +64,7 @@ export function OneDAgent() {
     isAgentRunningRef.current = true;
 
     for (const action of actions) {
-      setAgentPosition((prev) => prev + action);
+      setAgentPosition((prev) => prev! + action);
       await new Promise((resolve) => setTimeout(resolve, gameConfig.runDelay));
 
       if (!isAgentRunningRef.current) {
@@ -88,9 +88,7 @@ export function OneDAgent() {
   };
 
   return (
-    <div className="challenge1 flex flex-col items-center gap-6 mt-4">
-      <h1 className="text-3xl font-bold">1D Agent</h1>
-
+    <main className="challenge1 flex flex-col items-center gap-6 mt-4">
       <Controls
         setSelectionMode={setSelectionMode}
         trainAgent={trainAgent}
@@ -115,6 +113,6 @@ export function OneDAgent() {
           />
         ))}
       </div>
-    </div>
+    </main>
   );
 }

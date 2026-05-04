@@ -1,12 +1,17 @@
 {
   "name": "ml-mini-challenges",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.0",
   "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Sadanand pai",
+    "email": "sadypai@gmail.com"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "oxlint . --fix",
+    "lint": "oxlint",
     "format": "prettier . --write",
     "preview": "vite preview"
   },
@@ -36,5 +41,12 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10"
-  }
+  },
+  "engines": {
+    "node": ">=24.14.0"
+  },
+  "volta": {
+    "node": "24.14.0"
+  },
+  "homepage": "https://github.com/sadanandpai/ml-mini-challenges"
 }

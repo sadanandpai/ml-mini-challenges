@@ -1,32 +1,5 @@
 import { Link } from 'wouter';
-import { OneDAgent } from '../challenges/one-d-agent';
-import { TwoDAgent } from '../challenges/two-d-agent';
-import { TicTacToe } from '../challenges/tic-tac-toe';
-
-export const challenges = [
-  {
-    name: '1d-agent',
-    title: '1D Agent',
-    description:
-      'A one-dimensional reinforcement learning challenge where an agent learns to find an exit.',
-    component: OneDAgent,
-  },
-  {
-    name: '2d-agent',
-    title: '2D Agent',
-    description:
-      'A two-dimensional grid-based reinforcement learning challenge with customizable obstacles and rewards.',
-    component: TwoDAgent,
-  },
-  {
-    name: 'tic-tac-toe',
-    title: 'Tic-Tac-Toe',
-    description:
-      'A Q-learning agent trained against a random opponent. Train the agent, then play against it as O.',
-    component: TicTacToe,
-  },
-];
-
+import { challenges } from '../helpers/challengesList';
 
 export function HomePage() {
   return (
@@ -39,17 +12,45 @@ export function HomePage() {
         challenge below to get started.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl px-4">
-        {challenges.map(({ name, title, description }) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
+        {challenges.map(({ name, title, description, creationDate }) => (
           <Link
             key={name}
             href={`/${name}`}
-            className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 transition-colors cursor-pointer"
+            className="group block p-8 bg-base-100 border border-base-300 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-pointer relative overflow-hidden"
           >
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-              {title}
-            </h5>
-            <p className="font-normal text-gray-700">{description}</p>
+            <div className="flex justify-between items-start mb-4">
+              <h5 className="text-2xl font-bold tracking-tight text-base-content group-hover:text-primary transition-colors">
+                {title}
+              </h5>
+              {creationDate && (
+                <span className="badge badge-ghost badge-sm font-mono opacity-60">
+                  {creationDate}
+                </span>
+              )}
+            </div>
+
+            <p className="font-normal text-base-content/70 leading-relaxed mb-4">
+              {description}
+            </p>
+
+            <div className="flex items-center gap-1 text-sm font-semibold text-primary opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
+              Start Challenge
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </div>
           </Link>
         ))}
       </div>

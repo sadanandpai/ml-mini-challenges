@@ -22,7 +22,7 @@ export function TicTacToe() {
 
   const [board, setBoard] = useState<Board>(getEmptyBoard);
   const [phase, setPhase] = useState<GamePhase>('idle');
-  const [outcome, setOutcome] = useState<Mark>(null);
+  const [outcome, setOutcome] = useState<Mark | null>(null);
   const [isAgentFirst, setIsAgentFirst] = useState(false);
 
   const trainAgent = () => {
@@ -81,9 +81,7 @@ export function TicTacToe() {
   };
 
   return (
-    <div className="challenge3 flex flex-col items-center gap-6 mt-4">
-      <h1 className="text-3xl font-bold">Tic-Tac-Toe</h1>
-
+    <main className="challenge3 flex flex-col items-center gap-6 mt-4">
       <Controls
         phase={phase}
         isAgentFirst={isAgentFirst}
@@ -104,6 +102,6 @@ export function TicTacToe() {
       <p className="text-sm text-muted-foreground">
         Train the agent multiple times to see it becoming unbeatable.
       </p>
-    </div>
+    </main>
   );
 }

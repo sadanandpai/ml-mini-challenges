@@ -167,8 +167,6 @@ export function TwoDAgent() {
 
   return (
     <main className="challenge2 flex flex-col items-center gap-6 mt-4">
-      <h2 className="text-3xl font-bold">2D Agent</h2>
-
       <Controls
         setSelectionMode={setSelectionMode}
         trainAgent={trainAgent}

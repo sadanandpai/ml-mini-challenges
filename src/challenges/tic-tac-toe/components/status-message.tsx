@@ -2,7 +2,7 @@ import type { GamePhase, Mark } from '../helpers/types';
 
 interface Props {
   phase: GamePhase;
-  outcome: Mark;
+  outcome: Mark | null;
 }
 
 export function StatusMessage({ phase, outcome }: Props) {
