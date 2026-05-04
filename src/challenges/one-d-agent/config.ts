@@ -1,27 +1,17 @@
-const stateLength = 10;
-const actions = [0, 1];
-const directions = [-1, 1];
-const episodes = 25;
-const reward = 100;
-const wallPenalty = -100;
-const stepPenalty = -1;
-const runDelay = 333;
+export const gameConfig = {
+  stateLength: 10,
+  actions: [0, 1],
+  directions: [-1, 1],
+  reward: 100,
+  wallPenalty: -100,
+  stepPenalty: -1,
+  runDelay: 333,
+};
 
-const rewards = Array.from({ length: stateLength }, () => stepPenalty);
-const walls = [0, stateLength - 1];
-
-walls.forEach((wall) => (rewards[wall] = wallPenalty));
-const boundaries = (s: number) => s >= 1 && s < stateLength - 1;
-
-export const config = {
-  stateLength,
-  actions,
-  directions,
-  boundaries,
-  rewards,
-  episodes,
-  reward,
-  wallPenalty,
-  runDelay,
-  walls,
+export const agentConfig = {
+  episodes: 25,
+  learningRate: 0.1,
+  discountFactor: 0.9,
+  explorationDecay: 0.995,
+  minExplorationRate: 0.01,
 };

@@ -1,3 +1,5 @@
+import { agentConfig } from '../config';
+
 export class AgentEnv {
   private rows: number;
   private cols: number;
@@ -46,15 +48,10 @@ export class AgentEnv {
     rewards: number[][],
     checkBounds: (r: number, c: number) => boolean,
     rewardPosition: [number, number],
-    episodes = 100,
   ) {
-    const learningRate = 0.1;
-    const discountFactor = 0.9;
-    const explorationDecay = 0.995;
-    const minExplorationRate = 0.01;
     let explorationRate = 1.0;
 
-    for (let episode = 0; episode < episodes; episode++) {
+    for (let episode = 0; episode < agentConfig.episodes; episode++) {
       let r = Math.floor(Math.random() * this.rows);
       let c = Math.floor(Math.random() * this.cols);
 
@@ -68,8 +65,10 @@ export class AgentEnv {
           break;
         }
 
+        // 1. Choose an action
         const action = this.getAction(r, c, explorationRate);
 
+        // 2. Get the next state and the reward
         let nextR = r + this.directions[action][0];
         let nextC = c + this.directions[action][1];
         let reward: number;
@@ -82,18 +81,21 @@ export class AgentEnv {
           reward = rewards[nextR][nextC];
         }
 
+        // 3. Update Q-value
         const maxNextQValue = Math.max(...this.qTable[nextR][nextC]);
         this.qTable[r][c][action] =
-          (1 - learningRate) * this.qTable[r][c][action] +
-          learningRate * (reward + discountFactor * maxNextQValue);
+          (1 - agentConfig.learningRate) * this.qTable[r][c][action] +
+          agentConfig.learningRate *
+            (reward + agentConfig.discountFactor * maxNextQValue);
 
+        // 4. Move to the next state
         r = nextR;
         c = nextC;
       }
 
       explorationRate = Math.max(
-        minExplorationRate,
-        explorationRate * explorationDecay,
+        agentConfig.minExplorationRate,
+        explorationRate * agentConfig.explorationDecay,
       );
     }
 

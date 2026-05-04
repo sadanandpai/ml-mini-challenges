@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Cell } from './components/cell';
-import { config } from './config';
+import { gameConfig } from './config';
 import { Controls } from './components/controls';
 import { AgentEnv } from './helpers/one-d-rl';
+import { checkBoundary, getRewards, walls } from './helpers/utils';
+
+import './styles.css';
 
 export function OneDAgent() {
   const [agentEnv] = useState<AgentEnv>(() => {
-    const env = new AgentEnv(config.stateLength, config.actions);
-    env.setDirections(config.directions);
-    env.setBoundaries(config.boundaries);
+    const env = new AgentEnv(gameConfig.stateLength, gameConfig.actions);
+    env.setDirections(gameConfig.directions);
     return env;
   });
-  const states = Array.from({ length: config.stateLength }, (_, i) => i);
+  const states = Array.from({ length: gameConfig.stateLength }, (_, i) => i);
   const [selectionMode, setSelectionMode] = useState<'agent' | 'reward' | null>(
     null,
   );
@@ -37,17 +39,18 @@ export function OneDAgent() {
       setAgentPosition(position);
     } else if (selectionMode === 'reward') {
       setRewardPosition(position);
-      const rewards = [...config.rewards];
-      rewards[position] = config.reward;
-      agentEnv.setRewards(rewards);
     }
     setSelectionMode(null);
   };
 
   const trainAgent = () => {
-    if (rewardPosition === null) return;
+    if (rewardPosition === null) {
+      return;
+    }
+
     setIsTraining(true);
-    agentEnv.train(rewardPosition, config.episodes);
+    const rewards = getRewards(rewardPosition);
+    agentEnv.train(rewardPosition, rewards, checkBoundary);
     setIsTraining(false);
   };
 
@@ -56,13 +59,13 @@ export function OneDAgent() {
       return;
     }
 
-    const actions = agentEnv.run(agentPosition, rewardPosition);
+    const actions = agentEnv.run(agentPosition, rewardPosition, checkBoundary);
     setIsAgentRunning(true);
     isAgentRunningRef.current = true;
 
     for (const action of actions) {
       setAgentPosition((prev) => prev + action);
-      await new Promise((resolve) => setTimeout(resolve, config.runDelay));
+      await new Promise((resolve) => setTimeout(resolve, gameConfig.runDelay));
 
       if (!isAgentRunningRef.current) {
         break;
@@ -85,7 +88,7 @@ export function OneDAgent() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 mt-4">
+    <div className="challenge1 flex flex-col items-center gap-6 mt-4">
       <h1 className="text-3xl font-bold">1D Agent</h1>
 
       <Controls
@@ -107,7 +110,7 @@ export function OneDAgent() {
             cellPosition={cell}
             agentPosition={agentPosition}
             rewardPosition={rewardPosition}
-            wallPositions={config.walls}
+            wallPositions={walls}
             onClick={handleCellClick}
           />
         ))}

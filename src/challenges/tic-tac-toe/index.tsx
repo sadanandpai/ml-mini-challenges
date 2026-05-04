@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { config } from './config';
 import { TicTacToeAgent } from './helpers/tic-tac-toe-rl';
 import {
   applyMove,
@@ -12,11 +11,14 @@ import type { Board, GamePhase, Mark } from './helpers/types';
 import { Board as BoardComponent } from './components/board';
 import { Controls } from './components/controls';
 import { StatusMessage } from './components/status-message';
+import { gameConfig } from './config';
 
 import './styles.css';
 
 export function TicTacToe() {
-  const [agent] = useState<TicTacToeAgent>(() => new TicTacToeAgent());
+  const [agent] = useState(
+    () => new TicTacToeAgent(gameConfig.stateRows, gameConfig.stateCols),
+  );
 
   const [board, setBoard] = useState<Board>(getEmptyBoard);
   const [phase, setPhase] = useState<GamePhase>('idle');
@@ -25,7 +27,7 @@ export function TicTacToe() {
 
   const trainAgent = () => {
     setPhase('training');
-    agent.train(isAgentFirst, getReward, config.episodes);
+    agent.train(isAgentFirst, getReward);
     setPhase('idle');
   };
 
@@ -79,31 +81,29 @@ export function TicTacToe() {
   };
 
   return (
-    <div className="challenge3">
-      <div className="flex flex-col items-center gap-6 mt-4">
-        <h1 className="text-3xl font-bold">Tic-Tac-Toe</h1>
+    <div className="challenge3 flex flex-col items-center gap-6 mt-4">
+      <h1 className="text-3xl font-bold">Tic-Tac-Toe</h1>
 
-        <Controls
-          phase={phase}
-          isAgentFirst={isAgentFirst}
-          onToggleAgentFirst={setIsAgentFirst}
-          onTrain={trainAgent}
-          onPlay={startGame}
-          onResetBoard={resetBoard}
-          onResetEnv={resetEnv}
-        />
+      <Controls
+        phase={phase}
+        isAgentFirst={isAgentFirst}
+        onToggleAgentFirst={setIsAgentFirst}
+        onTrain={trainAgent}
+        onPlay={startGame}
+        onResetBoard={resetBoard}
+        onResetEnv={resetEnv}
+      />
 
-        <BoardComponent
-          board={board}
-          onClick={handleCellClick}
-          disabled={phase !== 'playing' || outcome !== null}
-        />
+      <BoardComponent
+        board={board}
+        onClick={handleCellClick}
+        disabled={phase !== 'playing' || outcome !== null}
+      />
 
-        <StatusMessage phase={phase} outcome={outcome} />
-        <p className="text-sm text-muted-foreground">
-          Train the agent multiple times to see it becoming unbeatable.
-        </p>
-      </div>
+      <StatusMessage phase={phase} outcome={outcome} />
+      <p className="text-sm text-muted-foreground">
+        Train the agent multiple times to see it becoming unbeatable.
+      </p>
     </div>
   );
 }

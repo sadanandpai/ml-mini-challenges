@@ -1,10 +1,10 @@
-import { config } from '../config';
+import { gameConfig } from '../config';
 import type { Board, Cell, Mark } from './types';
 
 /** Create a fresh empty 3×3 board. */
 export function getEmptyBoard(): Board {
-  return Array.from({ length: config.stateRows }, () =>
-    Array.from({ length: config.stateCols }, () => '-' as Mark),
+  return Array.from({ length: gameConfig.stateRows }, () =>
+    Array.from({ length: gameConfig.stateCols }, () => '-' as Mark),
   ) as Board;
 }
 
@@ -13,7 +13,7 @@ export function getEmptyBoardWithMove(player: Mark): Board {
   const move = getRandomMove(board);
   return applyMove(
     board,
-    [Math.floor(move / config.stateCols), move % config.stateCols],
+    [Math.floor(move / gameConfig.stateCols), move % gameConfig.stateCols],
     player,
   );
 }
@@ -26,10 +26,10 @@ export function getBoardKey(board: Board): string {
 /** Returns [row, col] pairs of all empty cells. */
 export function getEmptyCellsList(board: Board): number[] {
   const cells = [];
-  for (let r = 0; r < config.stateRows; r++) {
-    for (let c = 0; c < config.stateCols; c++) {
+  for (let r = 0; r < gameConfig.stateRows; r++) {
+    for (let c = 0; c < gameConfig.stateCols; c++) {
       if (board[r][c] === '-') {
-        cells.push(r * config.stateCols + c);
+        cells.push(r * gameConfig.stateCols + c);
       }
     }
   }
@@ -46,7 +46,7 @@ export function applyMove(board: Board, [row, col]: Cell, player: Mark): Board {
 /** Returns 1 if X wins, -1 if O wins, 0 for draw/ongoing. */
 export function checkWinner(board: Board): Mark {
   // check rows
-  for (let i = 0; i < config.stateRows; i++) {
+  for (let i = 0; i < gameConfig.stateRows; i++) {
     const first = board[i][0];
     if (first !== '-' && board[i].every((cell) => cell === first)) {
       return first;
@@ -54,7 +54,7 @@ export function checkWinner(board: Board): Mark {
   }
 
   // check columns
-  for (let i = 0; i < config.stateCols; i++) {
+  for (let i = 0; i < gameConfig.stateCols; i++) {
     const first = board[0][i];
     if (first !== '-' && board.every((row) => row[i] === first)) {
       return first;
@@ -68,10 +68,10 @@ export function checkWinner(board: Board): Mark {
   }
 
   // check anti-diagonal
-  const firstAnti = board[0][config.stateCols - 1];
+  const firstAnti = board[0][gameConfig.stateCols - 1];
   if (
     firstAnti !== '-' &&
-    board.every((row, i) => row[config.stateCols - 1 - i] === firstAnti)
+    board.every((row, i) => row[gameConfig.stateCols - 1 - i] === firstAnti)
   ) {
     return firstAnti;
   }
@@ -95,13 +95,13 @@ export function getRandomMove(board: Board): number {
 export function getReward(board: Board): number {
   const winner = checkWinner(board);
   if (winner === 'O') {
-    return config.winReward;
+    return gameConfig.winReward;
   }
   if (winner === 'X') {
-    return config.lossReward;
+    return gameConfig.lossReward;
   }
   if (isTerminal(board)) {
-    return config.drawReward;
+    return gameConfig.drawReward;
   }
 
   return 0;

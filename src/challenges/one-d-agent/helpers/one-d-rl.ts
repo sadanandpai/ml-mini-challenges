@@ -1,15 +1,14 @@
+import { agentConfig } from '../config';
+
 export class AgentEnv {
   private statesCount: number;
   private qTable: number[][];
   private actions: number[];
-  private rewards: number[];
   private directions: number[];
-  private checkBounds: (s: number) => boolean;
 
   constructor(statesCount: number, actions: number[]) {
     this.statesCount = statesCount;
     this.actions = actions;
-    this.rewards = Array.from({ length: statesCount }, () => 0);
     this.initializeQTable();
   }
 
@@ -19,16 +18,8 @@ export class AgentEnv {
     );
   }
 
-  setRewards(rewards: number[]) {
-    this.rewards = rewards;
-  }
-
   setDirections(directions: number[]) {
     this.directions = directions;
-  }
-
-  setBoundaries(fn: (s: number) => boolean) {
-    this.checkBounds = fn;
   }
 
   getAction(currentState: number, epsilon: number) {
@@ -49,22 +40,20 @@ export class AgentEnv {
 
   reset() {
     this.initializeQTable();
-    this.rewards = Array.from({ length: this.statesCount }, () => 0);
   }
 
-  train(exitState: number, episodes = 100) {
-    // Set hyperparameters
-    const learningRate = 0.1;
-    const discountFactor = 0.9;
-    const explorationDecay = 0.995;
-    const minExplorationRate = 0.01;
+  train(
+    exitState: number,
+    rewards: number[],
+    checkBounds: (s: number) => boolean,
+  ) {
     let explorationRate = 1.0;
 
-    for (let episode = 0; episode < episodes; episode++) {
+    for (let episode = 0; episode < agentConfig.episodes; episode++) {
       // Start at a random state
       let currentState = Math.floor(Math.random() * this.statesCount);
 
-      if (!this.checkBounds(currentState)) {
+      if (!checkBounds(currentState)) {
         continue;
       }
 
@@ -76,21 +65,22 @@ export class AgentEnv {
         let nextState = currentState + this.directions[action];
         let reward: number;
 
-        if (!this.checkBounds(nextState)) {
+        if (!checkBounds(nextState)) {
           // Out of bounds: we hit a wall!
           // Get the wall penalty from the intended nextState BEFORE resetting it
-          reward = this.rewards[nextState];
+          reward = rewards[nextState];
           nextState = currentState; // bump back to current state
         } else {
           // Valid move: get the reward of the state we arrived in
-          reward = this.rewards[nextState];
+          reward = rewards[nextState];
         }
 
         // 3. Update the Q-value using the Bellman equation
         const maxNextQValue = Math.max(...this.qTable[nextState]);
         this.qTable[currentState][action] =
-          (1 - learningRate) * this.qTable[currentState][action] +
-          learningRate * (reward + discountFactor * maxNextQValue);
+          (1 - agentConfig.learningRate) * this.qTable[currentState][action] +
+          agentConfig.learningRate *
+            (reward + agentConfig.discountFactor * maxNextQValue);
 
         // 4. Move to the next state
         currentState = nextState;
@@ -98,26 +88,30 @@ export class AgentEnv {
 
       // Decay the exploration rate
       explorationRate = Math.max(
-        minExplorationRate,
-        explorationRate * explorationDecay,
+        agentConfig.minExplorationRate,
+        explorationRate * agentConfig.explorationDecay,
       );
     }
 
     return this.qTable;
   }
 
-  *run(currentState: number, exitState: number) {
-    while (currentState !== exitState) {
-      const action = this.getAction(currentState, 0);
-      const nextState = currentState + this.directions[action];
+  *run(
+    agentPosition: number,
+    rewardPosition: number,
+    checkBounds: (s: number) => boolean,
+  ) {
+    while (agentPosition !== rewardPosition) {
+      const action = this.getAction(agentPosition, 0);
+      const nextState = agentPosition + this.directions[action];
 
-      if (!this.checkBounds(nextState)) {
+      if (!checkBounds(nextState)) {
         // if action would result in an out of bounds state, choose no action
         yield 0;
         continue;
       }
 
-      currentState = nextState;
+      agentPosition = nextState;
       yield this.directions[action];
     }
   }

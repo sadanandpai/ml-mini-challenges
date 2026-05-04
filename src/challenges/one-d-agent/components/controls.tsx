@@ -31,19 +31,19 @@ export function Controls({
         Place Reward
       </button>
       <button
-        className="btn btn-outline"
-        onClick={trainAgent}
-        disabled={isAgentRunning || rewardPosition === null || isTraining}
-      >
-        Train Agent
-      </button>
-
-      <button
         onClick={() => setSelectionMode('agent')}
         disabled={isAgentRunning || isTraining}
         className="btn btn-outline"
       >
         Place Agent
+      </button>
+
+      <button
+        className="btn btn-outline"
+        onClick={trainAgent}
+        disabled={isAgentRunning || rewardPosition === null || isTraining}
+      >
+        Train Agent
       </button>
 
       {isAgentRunning ? (

@@ -1,4 +1,4 @@
-export const config = {
+export const gameConfig = {
   stateRows: 16,
   stateCols: 20,
   actions: [0, 1, 2, 3], // 0: up, 1: right, 2: down, 3: left
@@ -11,7 +11,14 @@ export const config = {
   rewardValue: 100,
   wallPenalty: -100,
   firePenalty: -40,
-  runDelay: 333,
-  episodes: 500,
   stepPenalty: -1,
+  runDelay: 333,
+};
+
+export const agentConfig = {
+  episodes: 500,
+  learningRate: 0.1,
+  discountFactor: 0.9,
+  explorationDecay: 0.995,
+  minExplorationRate: 0.01,
 };

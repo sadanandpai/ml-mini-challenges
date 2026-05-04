@@ -8,12 +8,16 @@ import {
 } from './utils';
 import type { Board } from './types';
 import { getOpponentMove } from './opponent';
-import { config } from '../config';
+import { agentConfig } from '../config';
 
 export class TicTacToeAgent {
+  private readonly rows: number;
+  private readonly cols: number;
   private qTable: Map<string, number[]>;
 
-  constructor() {
+  constructor(rows: number, cols: number) {
+    this.rows = rows;
+    this.cols = cols;
     this.qTable = new Map();
   }
 
@@ -23,10 +27,7 @@ export class TicTacToeAgent {
 
   private getQValues(boardKey: string): number[] {
     if (!this.qTable.has(boardKey)) {
-      this.qTable.set(
-        boardKey,
-        new Array(config.stateRows * config.stateCols).fill(0),
-      );
+      this.qTable.set(boardKey, new Array(this.rows * this.cols).fill(0));
     }
     return this.qTable.get(boardKey)!;
   }
@@ -37,7 +38,7 @@ export class TicTacToeAgent {
     // Exploration
     if (Math.random() < epsilon) {
       const action = empty[Math.floor(Math.random() * empty.length)];
-      return [Math.floor(action / config.stateCols), action % config.stateCols];
+      return [Math.floor(action / this.cols), action % this.cols];
     }
 
     // Exploitation - Use the board-absolute indices
@@ -52,24 +53,13 @@ export class TicTacToeAgent {
       }
     }
 
-    return [
-      Math.floor(bestAction / config.stateCols),
-      bestAction % config.stateCols,
-    ];
+    return [Math.floor(bestAction / this.cols), bestAction % this.cols];
   }
 
-  train(
-    isAgentFirstPlayer: boolean,
-    getReward: (board: Board) => number,
-    episodes: number,
-  ) {
-    let learningRate = 0.2;
-    let discountFactor = 0.95;
-    let explorationDecay = 0.9995;
-    let minExplorationRate = 0.01;
+  train(isAgentFirstPlayer: boolean, getReward: (board: Board) => number) {
     let explorationRate = 1.0;
 
-    for (let episode = 0; episode < episodes; episode++) {
+    for (let episode = 0; episode < agentConfig.episodes; episode++) {
       let currentBoard = isAgentFirstPlayer
         ? getEmptyBoard()
         : getEmptyBoardWithMove('X');
@@ -95,21 +85,20 @@ export class TicTacToeAgent {
           : Math.max(...this.getQValues(getBoardKey(nextBoard)));
 
         const qValues = this.getQValues(getBoardKey(currentBoard));
-        const actionIdx = actionRow * config.stateCols + actionCol;
+        const actionIdx = actionRow * this.cols + actionCol;
         qValues[actionIdx] =
-          (1 - learningRate) * qValues[actionIdx] +
-          learningRate * (reward + discountFactor * maxNextQ);
+          (1 - agentConfig.learningRate) * qValues[actionIdx] +
+          agentConfig.learningRate *
+            (reward + agentConfig.discountFactor * maxNextQ);
 
         // 4. Move to the next state
         currentBoard = nextBoard;
       }
 
       explorationRate = Math.max(
-        minExplorationRate,
-        explorationRate * explorationDecay,
+        agentConfig.minExplorationRate,
+        explorationRate * agentConfig.explorationDecay,
       );
     }
-
-    console.log('Q-table size: ', this.qTable.size);
   }
 }

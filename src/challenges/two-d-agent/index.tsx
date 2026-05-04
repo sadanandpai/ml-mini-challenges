@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { AgentEnv } from './helpers/two-d-rl';
 import { Cell } from './components/cell';
-import { config } from './config';
+import { gameConfig } from './config';
 import { Controls } from './components/controls';
 import type { CellType, SelectionMode } from './helpers/types';
 import {
@@ -10,13 +10,15 @@ import {
   generateRewards,
 } from './helpers/utils';
 
+import './styles.css';
+
 export function TwoDAgent() {
   const [agentEnv] = useState<AgentEnv>(() => {
     return new AgentEnv(
-      config.stateRows,
-      config.stateCols,
-      config.actions,
-      config.directions,
+      gameConfig.stateRows,
+      gameConfig.stateCols,
+      gameConfig.actions,
+      gameConfig.directions,
     );
   });
 
@@ -29,7 +31,10 @@ export function TwoDAgent() {
   );
 
   const [grid, setGrid] = useState<CellType[][]>(
-    createInitialGrid({ rows: config.stateRows, cols: config.stateCols }),
+    createInitialGrid({
+      rows: gameConfig.stateRows,
+      cols: gameConfig.stateCols,
+    }),
   );
   const [isAgentRunning, setIsAgentRunning] = useState<boolean>(false);
   const [isTraining, setIsTraining] = useState<boolean>(false);
@@ -49,8 +54,8 @@ export function TwoDAgent() {
       checkBorder({
         row: r,
         col: c,
-        rows: config.stateRows,
-        cols: config.stateCols,
+        rows: gameConfig.stateRows,
+        cols: gameConfig.stateCols,
       })
     ) {
       return;
@@ -86,9 +91,9 @@ export function TwoDAgent() {
   const checkBounds = (r: number, c: number) => {
     return (
       r >= 0 &&
-      r < config.stateRows &&
+      r < gameConfig.stateRows &&
       c >= 0 &&
-      c < config.stateCols &&
+      c < gameConfig.stateCols &&
       grid[r][c] !== 'wall'
     );
   };
@@ -103,14 +108,13 @@ export function TwoDAgent() {
       generateRewards(
         grid,
         rewardPosition,
-        config.rewardValue,
-        config.wallPenalty,
-        config.stepPenalty,
-        config.firePenalty,
+        gameConfig.rewardValue,
+        gameConfig.wallPenalty,
+        gameConfig.stepPenalty,
+        gameConfig.firePenalty,
       ),
       checkBounds,
       rewardPosition,
-      config.episodes,
     );
     setIsTraining(false);
   };
@@ -133,7 +137,7 @@ export function TwoDAgent() {
         if (!prev) return null;
         return [prev[0] + action[0], prev[1] + action[1]];
       });
-      await new Promise((resolve) => setTimeout(resolve, config.runDelay));
+      await new Promise((resolve) => setTimeout(resolve, gameConfig.runDelay));
 
       if (!isAgentRunningRef.current) {
         break;
@@ -153,13 +157,16 @@ export function TwoDAgent() {
     setAgentPosition(null);
     setRewardPosition(null);
     setGrid(
-      createInitialGrid({ rows: config.stateRows, cols: config.stateCols }),
+      createInitialGrid({
+        rows: gameConfig.stateRows,
+        cols: gameConfig.stateCols,
+      }),
     );
     agentEnv.reset();
   };
 
   return (
-    <main className="flex flex-col items-center gap-6 mt-4">
+    <main className="challenge2 flex flex-col items-center gap-6 mt-4">
       <h2 className="text-3xl font-bold">2D Agent</h2>
 
       <Controls
@@ -177,7 +184,7 @@ export function TwoDAgent() {
       <div
         className="grid-container"
         style={{
-          gridTemplateColumns: `repeat(${config.stateCols}, 1fr)`,
+          gridTemplateColumns: `repeat(${gameConfig.stateCols}, 1fr)`,
         }}
       >
         {grid.map((row, r) =>
