@@ -86,9 +86,8 @@ export class AgentEnv {
           reward = this.rewards[nextState];
         }
 
-        const maxNextQValue = Math.max(...this.qTable[nextState]);
-
         // 3. Update the Q-value using the Bellman equation
+        const maxNextQValue = Math.max(...this.qTable[nextState]);
         this.qTable[currentState][action] =
           (1 - learningRate) * this.qTable[currentState][action] +
           learningRate * (reward + discountFactor * maxNextQValue);

@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { OneDAgent } from '../challenges/one-d-agent';
 import { TwoDAgent } from '../challenges/two-d-agent';
+import { TicTacToe } from '../challenges/tic-tac-toe';
 
 export const challenges = [
   {
@@ -17,7 +18,15 @@ export const challenges = [
       'A two-dimensional grid-based reinforcement learning challenge with customizable obstacles and rewards.',
     component: TwoDAgent,
   },
+  {
+    name: 'tic-tac-toe',
+    title: 'Tic-Tac-Toe',
+    description:
+      'A Q-learning agent trained against a random opponent. Train the agent, then play against it as O.',
+    component: TicTacToe,
+  },
 ];
+
 
 export function HomePage() {
   return (
