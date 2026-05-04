@@ -54,7 +54,7 @@ export function Controls({
         </button>
 
         <button className="btn btn-outline" onClick={onPlay} disabled={busy}>
-          Play vs Agent
+          Play Game
         </button>
 
         <button

@@ -1,0 +1,34 @@
+.challenge3 {
+  .ttt-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 2px solid #555;
+    width: fit-content;
+  }
+
+  .ttt-cell {
+    width: 90px;
+    height: 90px;
+    border: 1px solid #555;
+    background: none;
+    cursor: pointer;
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .ttt-cell:disabled {
+    cursor: not-allowed;
+  }
+
+  .ttt-x {
+    color: #2563eb; /* blue */
+  }
+
+  .ttt-o {
+    color: #dc2626; /* red */
+  }
+}
