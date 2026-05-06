@@ -1,8 +1,17 @@
 import { OneDAgent } from '../challenges/one-d-agent';
 import { TwoDAgent } from '../challenges/two-d-agent';
 import { TicTacToe } from '../challenges/tic-tac-toe';
+import { LinearRegression } from '../challenges/linear-regression';
 
 export const challenges = [
+  {
+    name: 'linear-regression',
+    title: 'Linear Regression',
+    description:
+      'Train the agent to predict the price of a house based on its size.',
+    component: LinearRegression,
+    creationDate: '06-05-2026',
+  },
   {
     name: '1d-agent',
     title: '1D Agent',
