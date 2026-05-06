@@ -1,11 +1,11 @@
-# ML Mini Challenges
+# Machine Learning Mini Challenges
 
 ### Collection of machine learning challenges for learning and practice
 
-Welcome to the ML Mini Challenges repository! This project is designed to
-provide a collection of interactive, bite-sized machine learning challenges
-implemented in React. It's a great resource for learning, practicing, and
-visualizing ML concepts.
+Welcome to the Machine Learning Mini Challenges repository! This project is
+designed to provide a collection of interactive, bite-sized machine learning
+challenges implemented in React. It's a great resource for learning, practicing,
+and visualizing ML concepts.
 
 ### [Explore all challenges](https://sadanandpai.github.io/ml-mini-challenges/)
 
@@ -66,11 +66,13 @@ Currently available challenges:
 ## 🛠️ Tech Stack
 
 - **Framework**: [React 19](https://react.dev/)
-- **Build Tool**: [Vite 8](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) &
-  [daisyUI 5](https://daisyui.com/)
-- **Language**: [TypeScript 6](https://www.typescriptlang.org/)
+- **Chart library**: [Plotly](https://plotly.com/javascript/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Component library**: [daisyUI 5](https://daisyui.com/)
+
 - **Routing**: [Wouter](https://github.com/molecula/wouter)
+- **Language**: [TypeScript 6](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite 8](https://vitejs.dev/)
 
 ---
 
