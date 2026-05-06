@@ -11,83 +11,27 @@ and visualizing ML concepts.
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js (>= 24.14.0) Recommended
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/sadanandpai/ml-mini-challenges.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd ml-mini-challenges
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-### Development
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-### Build
-
-Build the project for production (output to `docs/`):
-
-```bash
-npm run build
-```
-
----
-
-## 🧠 Challenges
-
-Currently available challenges:
-
-- **1D Agent Navigation**: A simple reinforcement learning agent learning to
-  navigate a 1D grid.
-- **2D Agent Gridworld**: An agent learning the optimal path in a 2D environment
-  with walls and rewards.
-- **Tic-Tac-Toe RL**: A classic game where a Q-learning agent learns to play
-  against human moves.
-
----
-
 ## 🛠️ Tech Stack
 
 - **Framework**: [React 19](https://react.dev/)
 - **Chart library**: [Plotly](https://plotly.com/javascript/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **Component library**: [daisyUI 5](https://daisyui.com/)
-
 - **Routing**: [Wouter](https://github.com/molecula/wouter)
 - **Language**: [TypeScript 6](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite 8](https://vitejs.dev/)
 
 ---
 
-## 🤝 Contributing
+## 📖 Documentation
 
-Contributions are what make the open-source community such an amazing place to
-learn, inspire, and create. Any contributions you make are **greatly
-appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and
-create a pull request. You can also simply open an issue with the tag
-"enhancement".
+- [**Contributing Guide**](./CONTRIBUTING.md) - Learn how to add new challenges
+  or improve existing ones.
+- [**Development Guide**](./DEVELOPING.md) - Detailed instructions for local
+  setup, development, and build processes.
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the [MIT License](./LICENSE) for more information.

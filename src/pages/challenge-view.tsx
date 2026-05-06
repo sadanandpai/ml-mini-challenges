@@ -1,5 +1,5 @@
 import { useParams } from 'wouter';
-import { challenges } from '../helpers/challengesList';
+import { challenges } from '../helpers/challenges-list';
 import { Navbar } from '../components/navbar';
 
 export function ChallengeView() {

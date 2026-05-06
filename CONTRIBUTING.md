@@ -42,22 +42,15 @@ welcome.
 
 ## 🛠️ Development Setup
 
-1. **Fork and Clone:**
-   ```bash
-   git clone https://github.com/your-username/ml-mini-challenges.git
-   cd ml-mini-challenges
-   ```
-   
-2. **Install Dependencies:**
-   ```bash
-   npm install
-   ```
-   
-3. **Run Dev Server:**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:5173](http://localhost:5173) in your browser.
+For detailed instructions on setting up your local environment and running the
+project, please refer to our [**Development Guide**](DEVELOPING.md).
+
+---
+
+## 🔗 Related Documents
+
+- [**README**](README.md)
+- [**Development Guide**](DEVELOPING.md)
 
 ---
 
@@ -86,4 +79,4 @@ welcome.
 ## 📄 License
 
 By contributing, you agree that your contributions will be licensed under the
-MIT License.
+[MIT License](./LICENSE).
