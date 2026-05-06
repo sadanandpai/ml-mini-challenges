@@ -24,29 +24,33 @@ export function LinearRegression() {
   };
 
   return (
-    <div className="challenge4 flex flex-col items-center gap-6 mt-4">
-      <p className="text-muted-foreground">
+    <div className="flex flex-col items-center gap-6 mt-4 w-full max-w-4xl">
+      <p className="text-muted-foreground text-center">
         Train the agent to predict the price of a house based on its size.
       </p>
 
-      <button className="btn btn-primary" onClick={trainModel}>
-        Train
-      </button>
+      <div className="flex flex-col items-center gap-4 w-full">
+        <button className="btn btn-primary" onClick={trainModel}>
+          Train Model
+        </button>
 
-      <Graph
-        data={HOUSE_PRICE_DATA}
-        weight={weight}
-        bias={bias}
-        isTrained={isTrained}
-      />
+        <Graph
+          data={HOUSE_PRICE_DATA}
+          weight={weight}
+          bias={bias}
+          isTrained={isTrained}
+        />
 
-      <p>
-        <strong>Mean Squared Error</strong>:{' '}
-        {getCost(HOUSE_PRICE_DATA, weight, bias).toFixed(4)}
-        {' | '}
-        <strong>Regression Line</strong>: y = {weight.toFixed(4)}x +{' '}
-        {bias.toFixed(4)}
-      </p>
+        {isTrained && (
+          <p className="text-sm space-y-1 text-center">
+            <strong>Mean Squared Error</strong>:{' '}
+            {getCost(HOUSE_PRICE_DATA, weight, bias).toFixed(4)}
+            {' | '}
+            <strong>Regression Line</strong>: y = {weight.toFixed(4)}x +{' '}
+            {bias.toFixed(4)}
+          </p>
+        )}
+      </div>
 
       <hr className="border border-gray-300 w-full" />
 
@@ -56,7 +60,7 @@ export function LinearRegression() {
             House Size (sq ft)
           </label>
           <input
-            className="input"
+            className="input input-bordered"
             type="number"
             id="size"
             min={1000}
@@ -67,13 +71,15 @@ export function LinearRegression() {
           />
         </div>
 
-        <button className="btn btn-primary" disabled={!isTrained}>
+        <button className="btn btn-secondary" disabled={!isTrained}>
           Predict Price
         </button>
       </form>
 
       {prediction !== 0 && (
-        <p>Predicted House Price is {Math.round(prediction * 1000)}$</p>
+        <div className="font-bold">
+          Predicted House Price is {Math.round(prediction * 1000)}$
+        </div>
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import { OneDAgent } from '../challenges/one-d-agent';
 import { TwoDAgent } from '../challenges/two-d-agent';
 import { TicTacToe } from '../challenges/tic-tac-toe';
 import { LinearRegression } from '../challenges/linear-regression';
+import { LinearClassification } from '../challenges/logistic-regression';
 
 export const challenges = [
   {
@@ -12,6 +13,15 @@ export const challenges = [
     component: LinearRegression,
     creationDate: '06-05-2026',
     tags: ['supervised', 'regression'],
+  },
+  {
+    name: 'linear-classification',
+    title: 'Linear Classification',
+    description:
+      'Predict loan approval based on credit score and monthly salary using Logistic Regression.',
+    component: LinearClassification,
+    creationDate: '06-05-2026',
+    tags: ['supervised', 'classification'],
   },
   {
     name: '1d-agent',

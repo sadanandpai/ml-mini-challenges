@@ -16,7 +16,7 @@ export const gameConfig = {
 };
 
 export const agentConfig = {
-  episodes: 500,
+  episodes: 10000,
   learningRate: 0.1,
   discountFactor: 0.9,
   explorationDecay: 0.995,

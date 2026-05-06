@@ -8,7 +8,7 @@ export function Challenges() {
         <Link
           key={name}
           href={`/${name}`}
-          className="group block p-8 bg-base-100 border border-base-300 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-pointer relative overflow-hidden"
+          className="group block p-8 bg-base-100 border border-base-300 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/100 transition-all cursor-pointer relative overflow-hidden"
         >
           <div className="flex justify-between items-start mb-4">
             <h5 className="text-2xl font-bold tracking-tight text-base-content group-hover:text-primary transition-colors">

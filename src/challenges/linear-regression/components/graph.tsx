@@ -18,7 +18,7 @@ export function Graph({ data, weight, bias, isTrained }: Props) {
       y,
       type: 'scatter',
       mode: 'markers',
-      marker: { size: 5, color: 'blue' },
+      marker: { size: 8, color: '#22c55e' },
       name: 'Data Points',
     } as Data;
   };
@@ -38,11 +38,16 @@ export function Graph({ data, weight, bias, isTrained }: Props) {
       type: 'scatter',
       mode: 'lines',
       name: 'Min loss line',
-      line: { dash: 'solid', width: 2, color: 'red' },
+      line: { color: '#64748b', width: 2, dash: 'dash' },
     } as Data;
   };
 
   useEffect(() => {
+    const isDarkMode = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+    const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+
     Plotly.newPlot(
       'graph',
       [getDataTrace(), getLineTrace()],
@@ -51,36 +56,32 @@ export function Graph({ data, weight, bias, isTrained }: Props) {
         height: 400,
         title: {
           text: 'House Price vs Size',
-          font: { size: 16 },
+          font: { size: 16, color: textColor },
           x: 0.5,
           xanchor: 'center',
         },
         xaxis: {
-          title: {
-            text: 'Size (sq ft)',
-            font: { size: 12 },
-          },
+          title: { text: 'Size (sq ft) - x', font: { color: textColor } },
+          tickfont: { color: textColor },
           showgrid: true,
           zeroline: true,
+          gridcolor: isDarkMode ? '#334155' : '#e2e8f0',
         },
         yaxis: {
           title: {
-            text: 'Price (in thousands $)',
-            font: { size: 12 },
+            text: 'Price (in thousands $) - y',
+            font: { color: textColor },
           },
+          tickfont: { color: textColor },
           showgrid: true,
           zeroline: true,
+          gridcolor: isDarkMode ? '#334155' : '#e2e8f0',
         },
-        // Legend positioning logic:
         showlegend: true,
-        legend: {
-          orientation: 'h', // Horizontal layout
-          yanchor: 'bottom',
-          y: 1, // Position slightly above the plot area
-          xanchor: 'right',
-          x: 1, // Align to the right edge of the chart
-        },
-        margin: { t: 50, b: 50, l: 60, r: 20 }, // Adjust margins so labels aren't cut off
+        legend: { orientation: 'h', y: -0.2, font: { color: textColor } },
+        margin: { t: 50, b: 80, l: 60, r: 20 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
       },
       {
         responsive: true,
