@@ -3,12 +3,12 @@ import { challenges } from '../helpers/challenges-list';
 
 export function Challenges() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl px-4 mb-8">
       {challenges.map(({ name, title, description, creationDate, tags }) => (
         <Link
           key={name}
           href={`/${name}`}
-          className="group block p-8 bg-base-100 border border-base-300 rounded-2xl shadow-sm hover:shadow-md hover:border-primary/100 transition-all cursor-pointer relative overflow-hidden"
+          className="group block p-8 bg-base-100 border border-base-content/20 rounded-2xl shadow-sm hover:shadow-md hover:border-primary transition-all cursor-pointer relative overflow-hidden"
         >
           <div className="flex justify-between items-start mb-4">
             <h5 className="text-2xl font-bold tracking-tight text-base-content group-hover:text-primary transition-colors">
