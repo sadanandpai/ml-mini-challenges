@@ -30,7 +30,7 @@ export const challenges = [
       'A one-dimensional reinforcement learning challenge where an agent learns to find an exit.',
     component: OneDAgent,
     creationDate: '01-05-2026',
-    tags: ['unsupervised', 'reinforcement'],
+    tags: ['reinforcement', 'q-learning'],
   },
   {
     name: '2d-agent',
@@ -39,7 +39,7 @@ export const challenges = [
       'A two-dimensional grid-based reinforcement learning challenge with customizable obstacles and rewards.',
     component: TwoDAgent,
     creationDate: '02-05-2026',
-    tags: ['unsupervised', 'reinforcement'],
+    tags: ['reinforcement', 'q-learning'],
   },
   {
     name: 'tic-tac-toe',
@@ -48,6 +48,6 @@ export const challenges = [
       'A Q-learning agent trained against a random opponent. Train the agent, then play against it as O.',
     component: TicTacToe,
     creationDate: '03-05-2026',
-    tags: ['supervised', 'reinforcement'],
+    tags: ['reinforcement', 'q-learning'],
   },
 ];

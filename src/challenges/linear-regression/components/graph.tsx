@@ -52,7 +52,7 @@ export function Graph({ data, weight, bias, isTrained }: Props) {
       'graph',
       [getDataTrace(), getLineTrace()],
       {
-        width: 600,
+        autosize: true,
         height: 400,
         title: {
           text: 'House Price vs Size',
@@ -91,8 +91,8 @@ export function Graph({ data, weight, bias, isTrained }: Props) {
   }, [data, weight, bias]);
 
   return (
-    <>
-      <div id="graph" />
-    </>
+    <div className="w-full overflow-x-auto flex justify-center">
+      <div id="graph" className="w-full max-w-[600px] min-w-[300px]" />
+    </div>
   );
 }

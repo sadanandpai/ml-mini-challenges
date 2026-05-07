@@ -68,14 +68,14 @@ export function Graph({ data, weights, isTrained }: Props) {
       'graph',
       getTraceData(),
       {
-        width: 600,
+        autosize: true,
         height: 400,
         title: {
-          text: 'Loan Approval: Salary vs Credit Score - x1',
+          text: 'Loan Approval: Salary vs Credit Score',
           font: { size: 16, color: textColor },
         },
         xaxis: {
-          title: { text: 'Credit Score', font: { color: textColor } },
+          title: { text: 'Credit Score - x1', font: { color: textColor } },
           tickfont: { color: textColor },
           showgrid: true,
           zeroline: true,
@@ -101,5 +101,9 @@ export function Graph({ data, weights, isTrained }: Props) {
     );
   }, [data, weights, isTrained]);
 
-  return <div id="graph" className="w-full max-w-[600px]" />;
+  return (
+    <div className="w-full overflow-x-auto flex justify-center">
+      <div id="graph" className="w-full max-w-[600px] min-w-[300px]" />
+    </div>
+  );
 }

@@ -166,7 +166,7 @@ export function TwoDAgent() {
   };
 
   return (
-    <main className="challenge2 flex flex-col items-center gap-6 mt-4">
+    <main className="two-d-agent flex flex-col items-center gap-2">
       <Controls
         setSelectionMode={setSelectionMode}
         trainAgent={trainAgent}

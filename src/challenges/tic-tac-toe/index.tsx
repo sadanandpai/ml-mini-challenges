@@ -81,7 +81,7 @@ export function TicTacToe() {
   };
 
   return (
-    <main className="challenge3 flex flex-col items-center gap-6 mt-4">
+    <main className="tic-tac-toe flex flex-col items-center gap-6 mt-4">
       <Controls
         phase={phase}
         isAgentFirst={isAgentFirst}

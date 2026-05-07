@@ -59,10 +59,7 @@ export function LinearClassification() {
 
       <hr className="border border-gray-300 w-full" />
 
-      <form
-        className="flex flex-col gap-4 w-full max-w-md"
-        onSubmit={handlePredict}
-      >
+      <form className="flex flex-col gap-4 max-w-md" onSubmit={handlePredict}>
         <h3 className="text-xl font-semibold text-center">
           Check Loan Eligibility
         </h3>

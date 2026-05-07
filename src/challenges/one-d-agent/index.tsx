@@ -88,7 +88,7 @@ export function OneDAgent() {
   };
 
   return (
-    <main className="challenge1 flex flex-col items-center gap-6 mt-4">
+    <main className="one-d-agent flex flex-col items-center gap-6 mt-4">
       <Controls
         setSelectionMode={setSelectionMode}
         trainAgent={trainAgent}
@@ -101,7 +101,7 @@ export function OneDAgent() {
         isTraining={isTraining}
       />
 
-      <div className="flex">
+      <div className="flex flex-wrap justify-center px-4">
         {states.map((cell) => (
           <Cell
             key={cell}
