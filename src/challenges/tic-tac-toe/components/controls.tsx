@@ -69,7 +69,7 @@ export function Controls({
           onClick={onResetEnv}
           disabled={busy}
         >
-          Reset Env
+          Reset Agent
         </button>
       </div>
     </div>

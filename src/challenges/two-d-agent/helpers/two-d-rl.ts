@@ -1,11 +1,12 @@
 import { agentConfig } from '../config';
 
+// Q-learning agent for 2D grid environment
 export class AgentEnv {
-  private rows: number;
-  private cols: number;
-  private qTable!: number[][][]; // [row][col][action]
-  private actions: number[];
-  private directions: number[][]; // [dr, dc]
+  private rows: number;                      // Grid height
+  private cols: number;                      // Grid width
+  private qTable!: number[][][];             // Q-values: [row][col][action]
+  private actions: number[];                 // Possible actions (up, down, left, right)
+  private directions: number[][];            // Movement deltas: [dr, dc] for each action
 
   constructor(
     rows: number,
@@ -20,6 +21,7 @@ export class AgentEnv {
     this.initializeQTable();
   }
 
+  // Initialize 3D Q-table with zeros
   initializeQTable() {
     this.qTable = Array.from({ length: this.rows }, () =>
       Array.from({ length: this.cols }, () =>
@@ -28,12 +30,16 @@ export class AgentEnv {
     );
   }
 
+  // Choose action using epsilon-greedy policy for 2D position
   getAction(r: number, c: number, epsilon: number) {
     if (Math.random() < epsilon) {
+      // Exploration: random action
       return this.actions[Math.floor(Math.random() * this.actions.length)];
     } else if (this.qTable[r][c].every((q) => q === this.qTable[r][c][0])) {
+      // All Q-values equal: choose randomly to break ties
       return this.actions[Math.floor(Math.random() * this.actions.length)];
     } else {
+      // Exploitation: choose action with highest Q-value
       return this.actions[
         this.qTable[r][c].indexOf(Math.max(...this.qTable[r][c]))
       ];
@@ -44,55 +50,63 @@ export class AgentEnv {
     this.initializeQTable();
   }
 
+  // Train agent using Q-learning on 2D grid
   train(
-    rewards: number[][],
-    checkBounds: (r: number, c: number) => boolean,
-    rewardPosition: [number, number],
+    rewards: number[][],                    // Reward matrix for each cell
+    checkBounds: (r: number, c: number) => boolean, // Valid position checker
+    rewardPosition: [number, number],       // Goal position [row, col]
   ) {
-    let explorationRate = 1.0;
+    let explorationRate = 1.0; // Start with full exploration
 
+    // Training episodes
     for (let episode = 0; episode < agentConfig.episodes; episode++) {
+      // Start at random valid position
       let r = Math.floor(Math.random() * this.rows);
       let c = Math.floor(Math.random() * this.cols);
 
-      // Do not spawn out of bounds or on a terminal state
+      // Skip invalid starting positions or terminal state
       if (!checkBounds(r, c)) {
         continue;
       }
 
+      // Episode: navigate from start to goal with step limit
       for (let step = 0; step < 1000; step++) {
         if (r === rewardPosition[0] && c === rewardPosition[1]) {
-          break;
+          break; // Reached goal
         }
 
-        // 1. Choose an action
+        // 1. Choose action (epsilon-greedy)
         const action = this.getAction(r, c, explorationRate);
 
-        // 2. Get the next state and the reward
+        // 2. Execute action and observe outcome
         let nextR = r + this.directions[action][0];
         let nextC = c + this.directions[action][1];
         let reward: number;
 
         if (!checkBounds(nextR, nextC)) {
+          // Hit wall: apply penalty and stay in current position
           reward = rewards[nextR]?.[nextC];
           nextR = r;
           nextC = c;
         } else {
+          // Valid move: receive reward for new position
           reward = rewards[nextR][nextC];
         }
 
-        // 3. Update Q-value
+        // 3. Update Q-value using Bellman equation
+        // Q(s,a) = Q(s,a) + α[r + γ*max(Q(s',a')) - Q(s,a)]
         const maxNextQValue = Math.max(...this.qTable[nextR][nextC]);
         this.qTable[r][c][action] =
           (1 - agentConfig.learningRate) * this.qTable[r][c][action] +
           agentConfig.learningRate *
             (reward + agentConfig.discountFactor * maxNextQValue);
 
-        // 4. Move to the next state
+        // 4. Move to next position
         r = nextR;
         c = nextC;
       }
 
+      // Decay exploration rate over time
       explorationRate = Math.max(
         agentConfig.minExplorationRate,
         explorationRate * agentConfig.explorationDecay,
@@ -102,32 +116,34 @@ export class AgentEnv {
     return this.qTable;
   }
 
+  // Execute trained policy on 2D grid (generator function)
   *run(
-    position: [number, number],
-    checkBounds: (r: number, c: number) => boolean,
-    rewardPosition: [number, number],
-    maxSteps = 250, // Prevent infinite loops
+    position: [number, number],            // Starting position [row, col]
+    checkBounds: (r: number, c: number) => boolean, // Valid position checker
+    rewardPosition: [number, number],       // Goal position [row, col]
+    maxSteps = 250,                         // Prevent infinite loops
   ) {
     let [r, c] = position;
     let steps = 0;
 
+    // Navigate to goal using learned policy
     while (
       (r !== rewardPosition[0] || c !== rewardPosition[1]) &&
       steps < maxSteps
     ) {
-      const action = this.getAction(r, c, 0); // exploration 0 = greedy
+      // Always exploit (no exploration) during execution
+      const action = this.getAction(r, c, 0);
       const nextR = r + this.directions[action][0];
       const nextC = c + this.directions[action][1];
 
       if (!checkBounds(nextR, nextC)) {
-        // Even if it's a wall, the agent "spent" a move
+        // Hit wall: consume move but stay in place
         yield [0, 0];
         steps++;
-        // If the agent is stuck hitting a wall, we might need a way to break
-        // or force a different action, but greedy will keep hitting the wall.
         continue;
       }
 
+      // Valid move: update position and yield movement direction
       r = nextR;
       c = nextC;
       yield this.directions[action];

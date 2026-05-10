@@ -99,9 +99,31 @@ export function TicTacToe() {
       />
 
       <StatusMessage phase={phase} outcome={outcome} />
-      <p className="text-sm text-muted-foreground">
-        Train the agent multiple times to see it becoming unbeatable.
-      </p>
+
+      <div className="p-4 bg-base-200 rounded-lg shadow-lg">
+        <h2 className="text-xl font-bold mb-2">How to Play</h2>
+        <ul className="list-disc list-inside">
+          <li className="text-slate-700">
+            <strong>Train Agent:</strong> Agent plays against a dummy opponent
+            to learn
+          </li>
+          <li className="text-slate-700">
+            <strong>Play Game:</strong> Play against the trained agent
+          </li>
+          <li className="text-slate-700">
+            <strong>Reset Board:</strong> Start a new game
+          </li>
+          <li className="text-slate-700">
+            <strong>Reset Agent:</strong> Start fresh with a new agent (agent
+            loses all learned knowledge)
+          </li>
+        </ul>
+
+        <p className="text-md text-slate-600 mt-2">
+          <strong>Note:</strong> Training may be slower sometimes. Train the
+          agent multiple times for better performance.
+        </p>
+      </div>
     </main>
   );
 }
