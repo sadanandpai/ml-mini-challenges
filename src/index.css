@@ -3,4 +3,45 @@
 
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui;
+  --animate-blob: blob 15s infinite ease-in-out;
+  --animate-blob-delayed: blob-delayed 15s infinite ease-in-out;
+
+  @keyframes blob {
+    0%, 100% {
+      transform: translate(0px, 0px) scale(1);
+      filter: blur(40px);
+    }
+    33% {
+      transform: translate(40px, -40px) scale(1.15);
+      filter: blur(50px);
+    }
+    66% {
+      transform: translate(-30px, 30px) scale(0.9);
+      filter: blur(35px);
+    }
+  }
+
+  @keyframes blob-delayed {
+    0%, 100% {
+      transform: translate(0px, 0px) scale(1);
+      filter: blur(45px);
+    }
+    33% {
+      transform: translate(-40px, 30px) scale(0.9);
+      filter: blur(35px);
+    }
+    66% {
+      transform: translate(30px, -40px) scale(1.1);
+      filter: blur(50px);
+    }
+  }
 }
+
+/* Custom background patterns */
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+}
+
